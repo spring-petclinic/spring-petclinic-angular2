@@ -20,24 +20,14 @@
  * @author Vitaliy Fedoriv
  */
 
-import {Injectable} from '@angular/core';
-import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
-import {Pet} from './pet';
-import {HttpClient} from '@angular/common/http';
-import {catchError} from 'rxjs/operators';
-import {HandleError, HttpErrorHandler} from '../error.service';
+import {Pet} from './pet'
+import {catchError} from 'rxjs/internal/operators';
+import { BaseService } from 'app/services/base.service';
 
-@Injectable()
-export class PetService {
+export class PetService extends BaseService {
 
-  private entityUrl = environment.REST_API_URL + 'pets';
-
-  private readonly handlerError: HandleError;
-
-  constructor(private http: HttpClient, private httpErrorHandler: HttpErrorHandler) {
-    this.handlerError = httpErrorHandler.createHandleError('OwnerService');
-  }
+  protected getURI() { return '/pets'; }
 
   getPets(): Observable<Pet[]> {
     return this.http.get<Pet[]>(this.entityUrl)

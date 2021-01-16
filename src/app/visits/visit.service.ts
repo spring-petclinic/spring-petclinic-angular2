@@ -20,24 +20,14 @@
  * @author Vitaliy Fedoriv
  */
 
-import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Visit} from './visit';
-import {environment} from '../../environments/environment';
-import {HandleError, HttpErrorHandler} from '../error.service';
-import {HttpClient} from '@angular/common/http';
 import {catchError} from 'rxjs/internal/operators';
+import { BaseService } from 'app/services/base.service';
 
-@Injectable()
-export class VisitService {
+export class VisitService extends BaseService {
 
-  private entityUrl = environment.REST_API_URL + 'visits';
-
-  private readonly handlerError: HandleError;
-
-  constructor(private http: HttpClient, private httpErrorHandler: HttpErrorHandler) {
-    this.handlerError = httpErrorHandler.createHandleError('OwnerService');
-  }
+  protected getURI() { return '/visits'; }
 
   getVisits(): Observable<Visit[]> {
     return this.http.get<Visit[]>(this.entityUrl)

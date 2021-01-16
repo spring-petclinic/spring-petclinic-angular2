@@ -20,25 +20,14 @@
  * @author Vitaliy Fedoriv
  */
 
-import {Injectable} from '@angular/core';
-import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
 import {Vet} from './vet';
-import {HttpClient} from '@angular/common/http';
-import {HandleError, HttpErrorHandler} from '../error.service';
 import {catchError} from 'rxjs/internal/operators';
+import { BaseService } from 'app/services/base.service';
 
+export class VetService extends BaseService {
 
-@Injectable()
-export class VetService {
-
-  entityUrl = environment.REST_API_URL + 'vets';
-
-  private readonly handlerError: HandleError;
-
-  constructor(private http: HttpClient, private httpErrorHandler: HttpErrorHandler) {
-    this.handlerError = httpErrorHandler.createHandleError('OwnerService');
-  }
+  protected getURI() { return '/vets'; }
 
   getVets(): Observable<Vet[]> {
     return this.http.get<Vet[]>(this.entityUrl)

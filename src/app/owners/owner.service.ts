@@ -20,25 +20,14 @@
  * @author Vitaliy Fedoriv
  */
 
-import {Injectable} from '@angular/core';
-import {Owner} from './owner';
 import {Observable} from 'rxjs';
-import {environment} from '../../environments/environment';
-import {HttpClient} from '@angular/common/http';
-import {catchError} from 'rxjs/operators';
-import {HandleError, HttpErrorHandler} from '../error.service';
+import {Owner} from './owner';
+import {catchError} from 'rxjs/internal/operators';
+import { BaseService } from 'app/services/base.service';
 
+export class OwnerService extends BaseService {
 
-@Injectable()
-export class OwnerService {
-
-  entityUrl = environment.REST_API_URL + 'owners';
-
-  private readonly handlerError: HandleError;
-
-  constructor(private http: HttpClient, private httpErrorHandler: HttpErrorHandler) {
-    this.handlerError = httpErrorHandler.createHandleError('OwnerService');
-  }
+  protected getURI() { return '/owners'; }
 
   getOwners(): Observable<Owner[]> {
     return this.http.get<Owner[]>(this.entityUrl)

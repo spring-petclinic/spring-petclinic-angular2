@@ -21,7 +21,7 @@
  */
 
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {NgModule, APP_INITIALIZER} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {AppComponent} from './app.component';
@@ -35,6 +35,8 @@ import {PartsModule} from './parts/parts.module';
 import {SpecialtiesModule} from './specialties/specialties.module';
 import {HttpErrorHandler} from './error.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {AppConfigService} from './config/appconfig.service'
+import { init_app } from './config/appconfig.module';
 
 
 @NgModule({
@@ -53,10 +55,16 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     SpecialtiesModule,
     PartsModule,
     BrowserAnimationsModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [
     HttpErrorHandler,
+    AppConfigService, {
+      provide: APP_INITIALIZER,
+      useFactory: init_app,
+      deps: [AppConfigService],
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

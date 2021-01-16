@@ -20,24 +20,14 @@
  * @author Vitaliy Fedoriv
  */
 
-import {Injectable} from '@angular/core';
-import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
 import {Specialty} from './specialty';
 import {catchError} from 'rxjs/internal/operators';
-import {HandleError, HttpErrorHandler} from '../error.service';
-import {HttpClient} from '@angular/common/http';
+import { BaseService } from 'app/services/base.service';
 
-@Injectable()
-export class SpecialtyService {
+export class SpecialtyService extends BaseService {
 
-  private entityUrl = environment.REST_API_URL + 'specialties';
-
-  private handlerError: HandleError;
-
-  constructor(private http: HttpClient, private httpErrorHandler: HttpErrorHandler) {
-    this.handlerError = httpErrorHandler.createHandleError('OwnerService');
-  }
+  protected getURI() { return '/specialties'; }
 
   getSpecialties(): Observable<Specialty[]> {
     return this.http.get<Specialty[]>(this.entityUrl)

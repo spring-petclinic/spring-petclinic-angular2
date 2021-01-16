@@ -1,32 +1,27 @@
 ARG DOCKER_HUB="docker.io"
+ARG NPM_REGISTRY="http://registry.npmjs.org"
+ARG NODE_VERSION="14" 
 
-FROM $DOCKER_HUB/library/node:10.10-alpine as build
-
+FROM node:${NODE_VERSION} as build
 
 COPY . /workspace/
 
-ARG NPM_REGISTRY=" https://registry.npmjs.org"
-
-RUN echo "registry = \"$NPM_REGISTRY\"" > /workspace/.npmrc                              && \
-    cd /workspace/                                                                       && \
-    npm install                                                                          && \
+RUN echo "registry = http://registry.npmjs.org" > /workspace/.npmrc  && \
+    cd /workspace/                                             && \
+    npm install                                                && \
     npm run build
 
-ARG NGINX_VERSION="1.17.6"
-FROM $DOCKER_HUB/library/nginx:$NGINX_VERSION AS runtime
+FROM node:${NODE_VERSION} as runtime
 
+COPY --from=build /workspace/dist/ /usr/local/nodejs/document-root/
+COPY --from=build /workspace/nodejs/ /usr/local/nodejs/
 
-COPY  --from=build /workspace/dist/ /usr/share/nginx/html/
-
-RUN chmod a+rwx /var/cache/nginx /var/run /var/log/nginx                        && \
-    sed -i.bak 's/listen\(.*\)80;/listen 8080;/' /etc/nginx/conf.d/default.conf && \
-    sed -i.bak 's/^user/#user/' /etc/nginx/nginx.conf
-
+RUN chmod a+rx /usr/local/nodejs/server.js                     && \
+    chmod a+rwx /usr/local/nodejs/document-root/*              
 
 EXPOSE 8080
 
-USER nginx
+USER node
 
-HEALTHCHECK     CMD     [ "service", "nginx", "status" ]
-
+CMD ["node", "/usr/local/nodejs/server.js"]
 

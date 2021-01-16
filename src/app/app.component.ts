@@ -20,13 +20,23 @@
  * @author Vitaliy Fedoriv
  */
 
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import { AppConfigService } from 'app/config/appconfig.service'
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+
+  constructor(private appCpnfigService: AppConfigService) {}
+
+  settings: any;
+
+  ngOnInit() {
+    this.settings = this.appCpnfigService.settings;
+    console.log(this.settings);
+  }
 
 }

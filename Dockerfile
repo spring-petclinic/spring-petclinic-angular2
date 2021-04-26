@@ -1,19 +1,19 @@
 ARG DOCKER_HUB="docker.io"
+ARG NGINX_VERSION="1.20.0"
+ARG NODE_VERSION="14.16.1-alpine3.13"
+ARG NPM_REGISTRY="https://registry.npmjs.org"
 
-FROM $DOCKER_HUB/library/node:10.10-alpine as build
+FROM $DOCKER_HUB/library/node:${NODE_VERSION} AS build
 
 
 COPY . /workspace/
-
-ARG NPM_REGISTRY=" https://registry.npmjs.org"
 
 RUN echo "registry = \"$NPM_REGISTRY\"" > /workspace/.npmrc                              && \
     cd /workspace/                                                                       && \
     npm install                                                                          && \
     npm run build
 
-ARG NGINX_VERSION="1.17.6"
-FROM $DOCKER_HUB/library/nginx:$NGINX_VERSION AS runtime
+FROM $DOCKER_HUB/library/nginx:${NGINX_VERSION} AS runtime
 
 
 COPY  --from=build /workspace/dist/ /usr/share/nginx/html/
@@ -28,5 +28,3 @@ EXPOSE 8080
 USER nginx
 
 HEALTHCHECK     CMD     [ "service", "nginx", "status" ]
-
-

@@ -22,7 +22,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import {DebugElement, NO_ERRORS_SCHEMA} from '@angular/core';
 
@@ -71,7 +71,7 @@ describe('OwnerListComponent', () => {
   };
   let testOwners: Owner[];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       schemas: [NO_ERRORS_SCHEMA],
@@ -126,7 +126,7 @@ describe('OwnerListComponent', () => {
   });
 
 
-  it(' should show full name after getOwners observable (async) ', async(() => {
+  it(' should show full name after getOwners observable (async) ', waitForAsync(() => {
     fixture.detectChanges();
     fixture.whenStable().then(() => { // wait for async getOwners
       fixture.detectChanges();        // update view with name

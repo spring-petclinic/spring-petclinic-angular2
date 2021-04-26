@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {Specialty} from '../specialty';
 import {SpecialtyAddComponent} from './specialty-add.component';
@@ -22,7 +22,7 @@ describe('SpecialtyAddComponent', () => {
   let spy: Spy;
   let testSpecialty: Specialty;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SpecialtyAddComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

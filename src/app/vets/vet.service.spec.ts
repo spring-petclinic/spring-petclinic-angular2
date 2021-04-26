@@ -22,7 +22,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import {async, inject, TestBed} from '@angular/core/testing';
+import { inject, TestBed, waitForAsync } from '@angular/core/testing';
 import {VetService} from './vet.service';
 import {HttpClient} from '@angular/common/http';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
@@ -36,7 +36,7 @@ describe('VetService', () => {
     });
   });
 
-  it('should ...', async(inject([HttpTestingController], (vetService: VetService, http: HttpClient) => {
+  it('should ...', waitForAsync(inject([HttpTestingController], (vetService: VetService, http: HttpClient) => {
     expect(vetService).toBeTruthy();
   })));
 });
